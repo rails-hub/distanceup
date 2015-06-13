@@ -18,8 +18,7 @@ class Api::ApisController < ApplicationController
 
   def find_nearby
     begin
-      email = register_api_params[:email].downcase
-      user = User.find_by_email(email)
+      user = User.find_by_auth_token(register_api_params[:auth_token])
       unless user.blank?
         users_nearby = User.find_users_nearby(user)
         render :json => users_nearby

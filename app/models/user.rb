@@ -1,6 +1,9 @@
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
+  after_create :generate_auth_token
+
+  validates_presence_of :email, :password
+
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
@@ -38,6 +41,17 @@ class User < ActiveRecord::Base
     # Delete 20m from total(just for this functionality to work)
     d = d - 20
     return d
+  end
+
+
+  def generate_auth_token
+    puts 'generate_auth_token'
+    tmp_auth_token = nil
+    loop do
+      tmp_auth_token = Devise.friendly_token
+      break if User.where(:auth_token => tmp_auth_token).count==0
+    end
+    self.update_attribute('auth_token', tmp_auth_token)
   end
 
 end

@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 20150613055461) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.string   "auth_token",                          null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.float    "lng"
