@@ -1,4 +1,4 @@
-class Api::ApisController < ApplicationController
+class Api::V1Controller < ApplicationController
 
   def register
     begin
@@ -35,7 +35,7 @@ class Api::ApisController < ApplicationController
 
 
   def register_api_params
-    params.permit(:username, :password, :email, :device_token, :lng, :lat)
+    params.permit(:username, :password, :email, :auth_token, :lng, :lat)
   end
 
 

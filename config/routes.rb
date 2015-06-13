@@ -2,10 +2,8 @@ Rails.application.routes.draw do
 
   devise_for :users
   namespace :api do
-    resources :apis do
-      post :register
-      get :find_nearby
-    end
+    post 'v1/register', to: 'v1#register'
+    get 'v1/find_nearby', to: 'v1#find_nearby'
   end
 
 end
