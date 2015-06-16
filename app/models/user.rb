@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
 
   def find_users_nearby(user)
     users_nearby = []
-    users = User.where('id ! = ?', user.id)
+    users = User.where('id != ?', user.id)
     users.each do |u|
       distance_with_user = distance(user.lat, user.lng, u.lat, u.lng)
       if distance_with_user <= 20

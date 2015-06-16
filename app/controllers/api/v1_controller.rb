@@ -8,7 +8,7 @@ class Api::V1Controller < ApplicationController
         user = User.create(:email => email, :password => register_api_params[:password], :lat => register_api_params[:lat], :lng => register_api_params[:lng])
         render :json => user
       else
-        user.update_attributes(:lng, register_api_params[:lng].to_f, :lat => register_api_params[:lat].to_f)
+        update_position(user)
         render :json => user
       end
     rescue Exception => e
@@ -17,22 +17,26 @@ class Api::V1Controller < ApplicationController
   end
 
   def find_nearby
-    begin
+    # begin
       user = User.find_by_auth_token(register_api_params[:auth_token])
       unless user.blank?
-        users_nearby = User.find_users_nearby(user)
+        users_nearby = User.new.find_users_nearby(user)
         render :json => users_nearby
       else
         render :json => "No such user found."
       end
-    rescue Exception => e
-      render :json => "Something went wrong."
-    end
+    # rescue Exception => e
+    #   render :json => "Something went wrong."
+    # end
   end
 
 
   private
 
+  def update_position(user)
+    user.update_attribute('lng', register_api_params[:lng].to_f)
+    user.update_attribute('lat', register_api_params[:lat].to_f)
+  end
 
   def register_api_params
     params.permit(:username, :password, :email, :auth_token, :lng, :lat)
